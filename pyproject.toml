@@ -1,0 +1,58 @@
+[project]
+name = "bussdcc-config"
+dynamic = [
+    "version",
+]
+dependencies = [
+    "bussdcc-framework==0.22.0",
+]
+description = "config"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Joshua B. Bussdieker", email = "jbussdieker@gmail.com" },
+]
+maintainers = [
+    { name = "Joshua B. Bussdieker", email = "jbussdieker@gmail.com" },
+]
+classifiers = [
+    "Framework :: Flask",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Typing :: Typed",
+]
+keywords = ["event-sourcing", "replay", "configuration", "deterministic"]
+license = "MIT"
+
+[project.scripts]
+bussdcc-config = "bussdcc_config.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "bussdcc-framework[dev]",
+]
+
+[project.urls]
+Homepage = "https://github.com/jbussdieker/bussdcc-config"
+Documentation = "https://github.com/jbussdieker/bussdcc-config/blob/main/README.md"
+Repository = "https://github.com/jbussdieker/bussdcc-config"
+Issues = "https://github.com/jbussdieker/bussdcc-config/issues"
+Changelog = "https://github.com/jbussdieker/bussdcc-config/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.0"
