@@ -16,7 +16,6 @@ maintainers = [
     { name = "Joshua B. Bussdieker", email = "jbussdieker@gmail.com" },
 ]
 classifiers = [
-    "Framework :: Flask",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Development Status :: 2 - Pre-Alpha",
     "Programming Language :: Python :: 3",
