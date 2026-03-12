@@ -1,7 +1,9 @@
 from typing import Literal
-from dataclasses import fields, is_dataclass
+from dataclasses import fields, is_dataclass, asdict
 from typing import Any, get_origin, get_args
 from collections import defaultdict
+
+from .meta import FieldMeta
 
 
 def group_schema(schema: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
@@ -18,7 +20,7 @@ def build_schema(obj: Any, prefix: str = "") -> list[dict[str, Any]]:
 
     for f in fields(obj):
         value = getattr(obj, f.name)
-        meta = dict(f.metadata) if f.metadata else {}
+        meta = FieldMeta.from_field(f)
         name = f"{prefix}.{f.name}" if prefix else f.name
 
         # nested dataclass
@@ -38,7 +40,7 @@ def build_schema(obj: Any, prefix: str = "") -> list[dict[str, Any]]:
                     schema.extend(build_schema(v, f"{name}.{k}"))
                 continue
 
-        ui = meta.get("ui")
+        ui = meta.ui
         options = None
 
         # Literal → select
@@ -56,18 +58,13 @@ def build_schema(obj: Any, prefix: str = "") -> list[dict[str, Any]]:
 
         schema.append(
             {
+                **asdict(meta),
                 "name": name,
                 "field": f.name,
-                "label": meta.get("label", f.name),
-                "group": meta.get("group", "General"),
                 "ui": ui,
                 "value": value,
                 "type": f.type,
                 "options": options,
-                "min": meta.get("min"),
-                "max": meta.get("max"),
-                "step": meta.get("step"),
-                "help": meta.get("help"),
             }
         )
 
