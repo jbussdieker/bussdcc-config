@@ -29,12 +29,15 @@
             {% endfor %}
           </select>
         {% else %}
-          <input type="text"
+          <input id="{{field.name}}"
+                 type="text"
                  class="form-control"
                  name="{{ field.name }}"
                  value="{{ field.value }}"
           >
         {% endif %}
+
+        <div id="{{ field.name }}Help" class="form-text">{{ field.help or "" }}</div>
       </div>
     {% endfor %}
   {% endfor %}

@@ -5,8 +5,12 @@ from typing import Any, List, Literal
 
 @dataclass(slots=True, frozen=True)
 class Config:
-    name: str = field(metadata={"label": "Name"})
-    active: bool = field(metadata={"label": "Active"})
+    name: str = field(metadata={"label": "Name", "help": "Full name"})
+
+    active: bool = field(
+        metadata={"label": "Active", "help": "User account active status"}
+    )
+
     age: int = field(
         metadata={
             "label": "Age",
@@ -18,6 +22,7 @@ class Config:
             "step": 1,
         },
     )
+
     sex: Literal["male", "female"] = field(
         metadata={"label": "Sex", "group": "Details"}
     )
