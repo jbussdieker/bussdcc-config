@@ -17,6 +17,8 @@ class ConfigStore:
             self.data = None
 
     def save(self) -> None:
-        if self.data:
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.path.write_text(json.dumps(self.data, indent=2))
+        if self.data is None:
+            return
+
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(json.dumps(self.data, indent=2))

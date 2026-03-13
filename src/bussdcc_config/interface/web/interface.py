@@ -27,8 +27,11 @@ class WebInterface(Base):
         @app.before_request
         def initial_configuration() -> Any:
             cfg = ctx.state.get("config")
+            if not cfg is None:
+                return
+
             allowed_endpoints = {"config.new", "config.update", "debug.index", "static"}
-            if not cfg and request.endpoint not in allowed_endpoints:
+            if request.endpoint not in allowed_endpoints:
                 return redirect(url_for("config.new"))
 
         @app.context_processor

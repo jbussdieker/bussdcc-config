@@ -21,7 +21,7 @@
                    type="number"
                    class="form-control"
                    name="{{ field.name }}"
-                   value="{{ field.value }}"
+                   value="{{ field.value or "" }}"
                    {% if field.min %}min="{{ field.min }}"{% endif %}
                    {% if field.max %}max="{{ field.max }}"{% endif %}
                    {% if field.step %}step="{{ field.step }}"{% endif %}

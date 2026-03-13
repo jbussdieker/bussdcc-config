@@ -14,15 +14,20 @@ class ConfigService(Service):
 
     def _save_config(self, ctx: ContextProtocol) -> None:
         cfg = ctx.state.get("config")
-        if cfg:
-            self.cs.data = asdict(cfg)
-            self.cs.save()
-            ctx.emit(message.ConfigSaved())
+        if cfg is None:
+            return
+
+        self.cs.data = asdict(cfg)
+        self.cs.save()
+
+        ctx.emit(message.ConfigSaved())
 
     def start(self, ctx: ContextProtocol) -> None:
         self.cs = config.ConfigStore(f"{self._data_dir}/config.json")
-        if self.cs.data:
-            ctx.emit(message.ConfigInitialized(self.cs.data))
+        if self.cs.data is None:
+            return
+
+        ctx.emit(message.ConfigInitialized(self.cs.data))
 
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
         if isinstance(evt.payload, message.ConfigChanged):
