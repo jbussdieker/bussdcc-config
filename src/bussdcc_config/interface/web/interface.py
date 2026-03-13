@@ -1,4 +1,5 @@
 from typing import Any
+from dataclasses import asdict
 
 from flask import redirect, url_for, request
 from flask_socketio import SocketIO
@@ -49,12 +50,6 @@ class WebInterface(Base):
         #    ctx.emit(message.ConfigSet(key=data["key"], value=data["value"]))
 
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
-        pass
-        # if isinstance(evt.payload, message.SnapshotUpdated):
-        #    payload = {
-        #        "timestamp": evt.time.timestamp() * 1000 if evt.time else None,
-        #        **ctx.state.get("snapshot"),
-        #    }
-        #    self.socketio.start_background_task(
-        #        self.socketio.emit, "ui.snapshot.updated", payload
-        #    )
+        if isinstance(evt.payload, message.ConfigChanged):
+            cfg = ctx.state.get("config")
+            self.socketio.emit("ui.config.changed", asdict(cfg))
