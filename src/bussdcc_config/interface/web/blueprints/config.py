@@ -15,9 +15,8 @@ def index() -> Any:
 
     if request.method == "GET":
         cfg = ctx.state.get("config")
-        schema = config.build_schema(cfg)
-        groups = config.group_schema(schema)
-        return render_template("config/index.html", groups=groups)
+        schema = config.schema(cfg)
+        return render_template("config/index.html", schema=schema)
 
     elif request.method == "POST":
         cfg = config.Config.from_dict(request.form)

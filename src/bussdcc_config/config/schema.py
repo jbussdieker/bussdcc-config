@@ -1,71 +1,55 @@
 from typing import Literal
-from dataclasses import fields, is_dataclass, asdict
+from dataclasses import dataclass, fields, is_dataclass, asdict, MISSING
 from typing import Any, get_origin, get_args
 from collections import defaultdict
 
-from .meta import FieldMeta
+from .field_meta import FieldMeta
+from .schema_field import SchemaField
 
 
-def group_schema(schema: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+@dataclass
+class Schema:
+    groups: dict[str, list[SchemaField]]
+    fields: list[SchemaField]
+
+
+def group_fields(fields: list[SchemaField]) -> dict[str, list[SchemaField]]:
     groups = defaultdict(list)
-    for field in schema:
-        groups[field["group"]].append(field)
+    for field in fields:
+        groups[field.meta.group].append(field)
     return dict(groups)
 
 
-def build_schema(obj: Any, prefix: str = "") -> list[dict[str, Any]]:
-    schema: list[dict[str, Any]] = []
+def build_fields(obj: Any) -> list[SchemaField]:
+    fl: list[SchemaField] = []
+
     if not is_dataclass(obj):
-        return schema
+        return fl
+
+    is_instance = not isinstance(obj, type)
 
     for f in fields(obj):
-        value = getattr(obj, f.name)
-        meta = FieldMeta.from_field(f)
-        name = f"{prefix}.{f.name}" if prefix else f.name
-
-        # nested dataclass
-        if is_dataclass(value):
-            schema.extend(build_schema(value, name))
-            continue
-
-        origin = get_origin(f.type)
-        args = get_args(f.type)
-
-        # dict[str, dataclass]
-        if origin is dict and value:
-            _, val_type = get_args(f.type)
-
-            if is_dataclass(next(iter(value.values()), None)):
-                for k, v in value.items():
-                    schema.extend(build_schema(v, f"{name}.{k}"))
-                continue
-
-        ui = meta.ui
-        options = None
-
-        # Literal → select
-        if origin is Literal:
-            ui = "select"
-            options = list(args)
-
-        if not ui:
-            if f.type in (int, float):
-                ui = "number"
-            elif f.type is bool:
-                ui = "checkbox"
+        if is_instance:
+            value = getattr(obj, f.name)
+        else:
+            if f.default is not MISSING:
+                value = f.default
+            elif f.default_factory is not MISSING:
+                value = f.default_factory()
             else:
-                ui = "text"
+                value = None
 
-        schema.append(
-            {
-                **asdict(meta),
-                "name": name,
-                "field": f.name,
-                "ui": ui,
-                "value": value,
-                "type": f.type,
-                "options": options,
-            }
-        )
+        sf = SchemaField.from_field(f, value=value)
+        fl.append(sf)
 
-    return schema
+    return fl
+
+
+def schema(obj: Any) -> Schema:
+    fields = build_fields(obj)
+    groups = group_fields(fields)
+
+    return Schema(
+        fields=fields,
+        groups=groups,
+    )

@@ -1,19 +1,21 @@
 <form method="post" action="{{ action }}">
-  {% for group, fields in groups.items() %}
+  {% for group, fields in schema.groups.items() %}
     <h5>{{ group }}</h5>
 
     {% for field in fields %}
       <div class="mb-3">
-        <label for="{{field.name}}" class="form-label">{{ field.label }}</label>
-
         {% if field.ui == "checkbox" %}
-          <input id="{{field.name}}"
-                 type="checkbox"
-                 class="form-check-input"
-                 name="{{ field.name }}"
-                 {% if field.value %}checked{% endif %}
-          >
+          <div class="form-check">
+            <input id="{{field.name}}"
+                   type="checkbox"
+                   class="form-check-input"
+                   name="{{ field.name }}"
+                   {% if field.value %}checked{% endif %}
+            >
+            <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
+          </div>
         {% elif field.ui == "number" %}
+          <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
           <input id="{{field.name}}"
                  type="number"
                  class="form-control"
@@ -22,8 +24,10 @@
                  min="{{ field.min }}"
                  max="{{ field.max }}"
                  step="{{ field.step }}"
+                 {% if field.meta.required %}required{% endif %}
           >
         {% elif field.ui == "select" %}
+          <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
           <select id="{{field.name}}"
                   class="form-select"
                   name="{{ field.name }}"
@@ -37,15 +41,17 @@
             {% endfor %}
           </select>
         {% else %}
+          <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
           <input id="{{field.name}}"
                  type="text"
                  class="form-control"
                  name="{{ field.name }}"
-                 value="{{ field.value }}"
+                 value="{{ field.value or "" }}"
+                 {% if field.meta.required %}required{% endif %}
           >
         {% endif %}
 
-        <div id="{{ field.name }}Help" class="form-text">{{ field.help or "" }}</div>
+        <div id="{{ field.name }}Help" class="form-text">{{ field.meta.help or "" }}</div>
       </div>
     {% endfor %}
   {% endfor %}
