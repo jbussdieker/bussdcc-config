@@ -9,7 +9,7 @@ from .field_meta import FieldMeta
 @dataclass(slots=True, frozen=True)
 class SchemaField:
     name: str
-    type: Type[Any] | str
+    type: Type[object] | str
     meta: FieldMeta
     value: Any | None = None
     ui: str | None = None
