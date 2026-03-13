@@ -20,7 +20,8 @@ class ConfigService(Service):
 
     def start(self, ctx: ContextProtocol) -> None:
         self.cs = config.ConfigStore(f"{self._data_dir}/config.json")
-        ctx.emit(message.ConfigInitialized(self.cs.data))
+        if self.cs.data:
+            ctx.emit(message.ConfigInitialized(self.cs.data))
 
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
         if isinstance(evt.payload, message.ConfigChanged):
