@@ -52,7 +52,9 @@
             >
           {% endif %}
 
-          <div id="{{ field.name }}Help" class="form-text">{{ field.meta.help or "" }}</div>
+          {% if field.meta.help %}
+          <div id="{{ field.name }}Help" class="form-text">{{ field.meta.help }}</div>
+          {% endif %}
         </div>
       {% endfor %}
     </fieldset>
