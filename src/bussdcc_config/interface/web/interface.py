@@ -28,7 +28,7 @@ class WebInterface(Base):
         @app.before_request
         def initial_configuration() -> Any:
             cfg = ctx.state.get("config")
-            if not cfg is None:
+            if cfg is not None:
                 return
 
             allowed_endpoints = {"config.new", "config.update", "debug.index", "static"}
