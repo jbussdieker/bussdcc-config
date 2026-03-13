@@ -14,9 +14,10 @@ class ConfigService(Service):
 
     def _save_config(self, ctx: ContextProtocol) -> None:
         cfg = ctx.state.get("config")
-        self.cs.data = asdict(cfg)
-        self.cs.save()
-        ctx.emit(message.ConfigSaved())
+        if cfg:
+            self.cs.data = asdict(cfg)
+            self.cs.save()
+            ctx.emit(message.ConfigSaved())
 
     def start(self, ctx: ContextProtocol) -> None:
         self.cs = config.ConfigStore(f"{self._data_dir}/config.json")
