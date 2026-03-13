@@ -5,7 +5,7 @@ from typing import Any, List, Literal
 
 @dataclass(slots=True, frozen=True)
 class Config:
-    name: str = field(metadata={"label": "Name", "help": "Full name"})
+    name: str = field(metadata={"label": "Name", "required": True, "help": "Full name"})
 
     active: bool = field(
         metadata={"label": "Active", "help": "User account active status"}
@@ -15,6 +15,7 @@ class Config:
         metadata={
             "label": "Age",
             "group": "Details",
+            "required": True,
             "ui": "number",
             "help": "Age on the date filling this out",
             "min": 0,
