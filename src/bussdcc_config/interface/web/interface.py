@@ -1,5 +1,6 @@
 from typing import Any
 
+from flask import redirect, url_for, request
 from flask_socketio import SocketIO
 
 from bussdcc.process import Process
@@ -22,6 +23,13 @@ class WebInterface(Base):
         app.register_blueprint(home_bp)
         app.register_blueprint(config_bp)
         app.register_blueprint(debug_bp)
+
+        @app.before_request
+        def initial_configuration() -> Any:
+            cfg = ctx.state.get("config")
+            allowed_endpoints = {"config.new", "config.update", "debug.index", "static"}
+            if not cfg and request.endpoint not in allowed_endpoints:
+                return redirect(url_for("config.new"))
 
         @app.context_processor
         def get_context() -> dict[str, Any]:
