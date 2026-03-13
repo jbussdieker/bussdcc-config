@@ -8,7 +8,11 @@ class ConfigProcess(Process):
 
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
         if isinstance(evt.payload, message.ConfigInitialized):
-            ctx.state.set("config", config.Config.from_dict(evt.payload.data))
+            ctx.state.set(
+                "config", config.build_dataclass(config.Config, evt.payload.data)
+            )
         elif isinstance(evt.payload, message.ConfigUpdate):
-            ctx.state.set("config", config.Config.from_dict(evt.payload.data))
+            ctx.state.set(
+                "config", config.build_dataclass(config.Config, evt.payload.data)
+            )
             ctx.emit(message.ConfigChanged())

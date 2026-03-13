@@ -1,3 +1,4 @@
+import json
 from typing import Any
 from dataclasses import asdict
 from flask import Blueprint, render_template, redirect, url_for, request
@@ -6,6 +7,8 @@ from bussdcc_framework.interface.web import current_ctx
 
 from .... import message, config
 
+from ....config import schema
+
 bp = Blueprint("config", __name__, url_prefix="/config")
 
 
@@ -13,23 +16,29 @@ bp = Blueprint("config", __name__, url_prefix="/config")
 def index() -> Any:
     ctx = current_ctx()
     cfg = ctx.state.get("config")
-    schema = config.schema(cfg)
+    s = schema.build(cfg)
+    fields = schema.flatten(s)
+    groups = schema.group(fields)
     return render_template(
-        "config/index.html", schema=schema, action=url_for("config.update")
+        "config/index.html", groups=groups, action=url_for("config.update")
     )
 
 
 @bp.route("/update", methods=["POST"])
 def update() -> Any:
     ctx = current_ctx()
-    cfg = config.Config.from_dict(request.form)
+    s = schema.build(config.Config)
+    data = schema.unflatten(s, request.form)
+    cfg = config.build_dataclass(config.Config, data)
     ctx.emit(message.ConfigUpdate(data=asdict(cfg)))
     return redirect(url_for("home.index"))
 
 
 @bp.route("/new")
 def new() -> Any:
-    schema = config.schema(config.Config)
+    s = schema.build(config.Config)
+    fields = schema.flatten(s)
+    groups = schema.group(fields)
     return render_template(
-        "config/new.html", schema=schema, action=url_for("config.update")
+        "config/new.html", groups=groups, action=url_for("config.update")
     )

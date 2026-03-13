@@ -4,6 +4,12 @@ from typing import Any, List, Literal
 
 
 @dataclass(slots=True, frozen=True)
+class Database:
+    host: str = field(metadata={"label": "Host", "group": "Database"})
+    port: int = field(metadata={"label": "Port", "group": "Database"})
+
+
+@dataclass(slots=True, frozen=True)
 class Config:
     name: str = field(metadata={"label": "Name", "required": True, "help": "Full name"})
 
@@ -28,11 +34,4 @@ class Config:
         metadata={"label": "Sex", "group": "Details"}
     )
 
-    @staticmethod
-    def from_dict(data: dict[str, Any]) -> "Config":
-        return Config(
-            name=data.get("name", ""),
-            age=int(data.get("age", 0)),
-            sex=data.get("sex", "male"),
-            active=bool(data.get("active")),
-        )
+    database: Database
