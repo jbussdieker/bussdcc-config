@@ -21,9 +21,9 @@
                  class="form-control"
                  name="{{ field.name }}"
                  value="{{ field.value }}"
-                 min="{{ field.min }}"
-                 max="{{ field.max }}"
-                 step="{{ field.step }}"
+                 {% if field.min %}min="{{ field.min }}"{% endif %}
+                 {% if field.max %}max="{{ field.max }}"{% endif %}
+                 {% if field.step %}step="{{ field.step }}"{% endif %}
                  {% if field.meta.required %}required{% endif %}
           >
         {% elif field.ui == "select" %}
