@@ -18,6 +18,10 @@ class Config:
         metadata={"label": "Active", "help": "User account active status"}
     )
 
+    birthday: date = field(metadata={"label": "Birthday"})
+    alarm: time = field(metadata={"label": "Alarm"})
+    next_run: datetime = field(metadata={"label": "Next Run"})
+
     age: int = field(
         metadata={
             "label": "Age",

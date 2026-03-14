@@ -36,9 +36,9 @@
                    class="form-control"
                    name="{{ field.name }}"
                    value="{{ field.value or "" }}"
-                   {% if field.meta.min %}min="{{ field.meta.min }}"{% endif %}
-                   {% if field.meta.max %}max="{{ field.meta.max }}"{% endif %}
-                   {% if field.meta.step %}step="{{ field.meta.step }}"{% endif %}
+                   {% if field.meta.min != None %}min="{{ field.meta.min }}"{% endif %}
+                   {% if field.meta.max != None %}max="{{ field.meta.max }}"{% endif %}
+                   {% if field.meta.step != None %}step="{{ field.meta.step }}"{% endif %}
                    {% if field.meta.required %}required{% endif %}
             >
           {% endif %}
