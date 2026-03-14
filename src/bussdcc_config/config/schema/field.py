@@ -1,5 +1,6 @@
 from dataclasses import dataclass, Field
 from typing import Any, Literal, get_origin, get_args, Type
+from datetime import date, time, datetime
 
 from .field_meta import FieldMeta
 
@@ -10,7 +11,7 @@ class SchemaField:
     type: Type[object] | str
     meta: FieldMeta
     value: Any | None = None
-    ui: str | None = None
+    input_type: str | None = None
     options: list[str] | None = None
 
     @staticmethod
@@ -20,26 +21,32 @@ class SchemaField:
         origin = get_origin(f.type)
         args = get_args(f.type)
 
-        ui = meta.ui
+        input_type = None
         options = None
 
         if origin is Literal:
-            ui = "select"
+            input_type = "select"
             options = list(args)
 
-        if not ui:
+        if input_type is None:
             if f.type in (int, float):
-                ui = "number"
+                input_type = "number"
             elif f.type is bool:
-                ui = "checkbox"
+                input_type = "checkbox"
+            elif f.type is date:
+                input_type = "date"
+            elif f.type is time:
+                input_type = "time"
+            elif f.type is datetime:
+                input_type = "datetime-local"
             else:
-                ui = "text"
+                input_type = "text"
 
         return SchemaField(
             name=f.name,
             type=f.type,
             meta=meta,
             value=value,
-            ui=ui,
+            input_type=input_type,
             options=options,
         )

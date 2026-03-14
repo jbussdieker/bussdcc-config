@@ -8,7 +8,6 @@ class FieldMeta:
     label: str
     group: str = "General"
     required: bool = False
-    ui: str | None = None
     help: str | None = None
     min: int | float | None = None
     max: int | float | None = None
@@ -22,7 +21,6 @@ class FieldMeta:
             label=meta.get("label", f.name),
             group=meta.get("group", "General"),
             required=meta.get("required", False),
-            ui=meta.get("ui"),
             help=meta.get("help"),
             min=meta.get("min"),
             max=meta.get("max"),

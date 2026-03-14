@@ -5,7 +5,7 @@
 
       {% for field in fields %}
         <div class="mb-3">
-          {% if field.ui == "checkbox" %}
+          {% if field.input_type == "checkbox" %}
             <div class="form-check">
               <input id="{{field.name}}"
                      type="checkbox"
@@ -15,19 +15,7 @@
               >
               <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
             </div>
-          {% elif field.ui == "number" %}
-            <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
-            <input id="{{field.name}}"
-                   type="number"
-                   class="form-control"
-                   name="{{ field.name }}"
-                   value="{{ field.value or "" }}"
-                   {% if field.min %}min="{{ field.min }}"{% endif %}
-                   {% if field.max %}max="{{ field.max }}"{% endif %}
-                   {% if field.step %}step="{{ field.step }}"{% endif %}
-                   {% if field.meta.required %}required{% endif %}
-            >
-          {% elif field.ui == "select" %}
+          {% elif field.input_type == "select" %}
             <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
             <select id="{{field.name}}"
                     class="form-select"
@@ -44,10 +32,13 @@
           {% else %}
             <label for="{{field.name}}" class="form-label">{{ field.meta.label }}</label>
             <input id="{{field.name}}"
-                   type="text"
+                   type="{{field.input_type}}"
                    class="form-control"
                    name="{{ field.name }}"
                    value="{{ field.value or "" }}"
+                   {% if field.meta.min %}min="{{ field.meta.min }}"{% endif %}
+                   {% if field.meta.max %}max="{{ field.meta.max }}"{% endif %}
+                   {% if field.meta.step %}step="{{ field.meta.step }}"{% endif %}
                    {% if field.meta.required %}required{% endif %}
             >
           {% endif %}

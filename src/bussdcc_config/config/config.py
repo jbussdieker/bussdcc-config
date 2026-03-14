@@ -1,6 +1,7 @@
 from dataclasses import dataclass, asdict, field
 
 from typing import Any, List, Literal
+from datetime import date, time, datetime
 
 
 @dataclass(slots=True, frozen=True)
@@ -22,7 +23,6 @@ class Config:
             "label": "Age",
             "group": "Details",
             "required": True,
-            "ui": "number",
             "help": "Age on the date filling this out",
             "min": 0,
             "max": 120,
