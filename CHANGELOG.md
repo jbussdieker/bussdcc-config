@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.2.0...v0.3.0) (2026-03-14)
+
+
+### Features
+
+* **config, interface:** add new fields and improve form rendering ([518db97](https://github.com/jbussdieker/bussdcc-config/commit/518db97a4b9d19277ff0ec786bcd9deab7ca05c5))
+
 ## [0.2.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.1.0...v0.2.0) (2026-03-13)
 
 
