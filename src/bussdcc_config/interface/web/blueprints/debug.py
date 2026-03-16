@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 
 from bussdcc_framework.interface.web import current_ctx
+from bussdcc_framework.json import to_jsonable
 
 bp = Blueprint("debug", __name__, url_prefix="/debug")
 
@@ -15,4 +16,6 @@ def index() -> str:
 
     config = current_ctx().state.get("config")
 
-    return render_template("debug/index.html", state=state, config=config)
+    return render_template(
+        "debug/index.html", state=to_jsonable(state), config=to_jsonable(config)
+    )

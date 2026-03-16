@@ -52,4 +52,4 @@ class WebInterface(Base):
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
         if isinstance(evt.payload, message.ConfigChanged):
             cfg = ctx.state.get("config")
-            self.socketio.emit("ui.config.changed", asdict(cfg))
+            self.socketio.emit("ui.config.changed", cfg)

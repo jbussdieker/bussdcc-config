@@ -1,14 +1,24 @@
-from typing import Any, Type, get_origin, get_args, Literal
+from typing import Any, Type, get_origin, get_args, Literal, Union
 from dataclasses import is_dataclass, fields, MISSING
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from _typeshed import DataclassInstance
+from datetime import date, time, datetime
 
 
 def _coerce(tp: Any, value: Any) -> Any:
     if value is None:
         return None
+
+    origin = get_origin(tp)
+    args = get_args(tp)
+
+    # Optional[T] / Union[T, None]
+    if origin is Union and type(None) in args:
+        real_type = next(a for a in args if a is not type(None))
+        return _coerce(real_type, value)
+
+    if origin is Literal:
+        if value not in args:
+            raise ValueError(f"{value!r} not in {args}")
+        return value
 
     if tp is bool:
         return value in ("on", "true", "1", True)
@@ -19,12 +29,19 @@ def _coerce(tp: Any, value: Any) -> Any:
     if tp is float:
         return float(value)
 
+    if tp is date and isinstance(value, str):
+        return date.fromisoformat(value)
+
+    if tp is time and isinstance(value, str):
+        return time.fromisoformat(value)
+
+    if tp is datetime and isinstance(value, str):
+        return datetime.fromisoformat(value)
+
     return value
 
 
-def build_dataclass(
-    cls: DataclassInstance | type[DataclassInstance], data: dict[str, Any]
-) -> Any:
+def build_dataclass(cls: object | type[object], data: dict[str, Any]) -> Any:
     if not is_dataclass(cls):
         raise TypeError(f"{cls} is not a dataclass")
 
@@ -33,8 +50,10 @@ def build_dataclass(
     for f in fields(cls):
         value = data.get(f.name, MISSING)
 
+        if is_dataclass(f.type) and value is not None and not isinstance(value, dict):
+            raise TypeError(f"{f.name} must be a dict")
+
         if value is MISSING:
-            # use default if available
             if f.default is not MISSING:
                 value = f.default
             elif f.default_factory is not MISSING:
@@ -42,18 +61,14 @@ def build_dataclass(
             else:
                 value = None
 
-        # detect nested dataclass
         if is_dataclass(f.type):
             value = build_dataclass(f.type, value or {})
 
-        # detect list[dataclass]
         origin = get_origin(f.type)
         args = get_args(f.type)
 
         if origin is list and args and is_dataclass(args[0]) and value is not None:
             value = [build_dataclass(args[0], v) for v in value]
-
-        # detect dict[str, dataclass]
         elif (
             origin is dict
             and args
@@ -62,7 +77,6 @@ def build_dataclass(
             and value is not None
         ):
             value = {k: build_dataclass(args[1], v) for k, v in value.items()}
-
         else:
             value = _coerce(f.type, value)
 
