@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.3.0...v0.4.0) (2026-03-16)
+
+
+### Features
+
+* **config, interface:** enhance type handling and update JSON usage ([0d2291a](https://github.com/jbussdieker/bussdcc-config/commit/0d2291ab70e786e106b3ca2bd4bb53c242062654))
+
 ## [0.3.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.2.0...v0.3.0) (2026-03-14)
 
 
