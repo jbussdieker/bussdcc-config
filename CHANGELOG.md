@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.1.0...v1.2.0) (2026-03-17)
+
+
+### Features
+
+* **config:** handle optional types in schema field processing ([c1e8653](https://github.com/jbussdieker/bussdcc-config/commit/c1e8653f7b4be7b4c884c1d9272dbe12087f2ecd))
+
 ## [1.1.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.0.0...v1.1.0) (2026-03-17)
 
 
