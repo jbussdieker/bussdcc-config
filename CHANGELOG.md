@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.4.0...v1.0.0) (2026-03-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **config:** build_dataclass is no longer exported from bussdcc_config.config; use bussdcc_framework.util.build_dataclass instead.
+
+### Code Refactoring
+
+* **config:** remove local dataclass builder and support nested container schemas ([1e60243](https://github.com/jbussdieker/bussdcc-config/commit/1e602439ab9d1f886d121f164ec7e87fc5d8cb90))
+
 ## [0.4.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.3.0...v0.4.0) (2026-03-16)
 
 
