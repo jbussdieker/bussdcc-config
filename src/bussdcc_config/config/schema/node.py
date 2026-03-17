@@ -11,3 +11,4 @@ class SchemaNode:
     children: list["SchemaNode"]
     container: str | None = None
     items: list["SchemaNode"] | None = None
+    item_schema: SchemaNode | None = None

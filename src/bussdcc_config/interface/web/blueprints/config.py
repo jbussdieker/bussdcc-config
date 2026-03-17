@@ -4,6 +4,8 @@ from dataclasses import asdict
 from flask import Blueprint, render_template, redirect, url_for, request
 
 from bussdcc_framework.interface.web import current_ctx
+from bussdcc_framework.util import build_dataclass
+from bussdcc_framework import json as framework_json
 
 from .... import message, config
 
@@ -29,7 +31,7 @@ def update() -> Any:
     ctx = current_ctx()
     s = schema.build(config.Config)
     data = schema.unflatten(s, request.form)
-    cfg = config.build_dataclass(config.Config, data)
+    cfg = build_dataclass(config.Config, data)
     ctx.emit(message.ConfigUpdate(data=asdict(cfg)))
     return redirect(url_for("home.index"))
 

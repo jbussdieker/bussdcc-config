@@ -1,7 +1,7 @@
 from typing import Any
 from .node import SchemaNode
 
-from ..builder import _coerce
+from bussdcc_framework.util.dataclass import _coerce
 
 
 def unflatten(schema: SchemaNode, flat: dict[str, Any]) -> dict[str, Any]:

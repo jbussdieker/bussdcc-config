@@ -10,10 +10,15 @@ def _detect_container(tp: object) -> Tuple[str | None, Any | None]:
     origin = get_origin(tp)
     args = get_args(tp)
 
-    if origin is list and args and is_dataclass(args[0]):
-        return "list", args[0]
+    if origin in (list, tuple) and args:
+        item_tp = args[0]
+        if len(args) == 2 and args[1] is Ellipsis:
+            item_tp = args[0]
 
-    if origin is dict and args and args[0] is str and is_dataclass(args[1]):
+        if is_dataclass(item_tp):
+            return "list", item_tp
+
+    if origin is dict and len(args) == 2 and args[0] is str and is_dataclass(args[1]):
         return "dict", args[1]
 
     return None, None
@@ -48,8 +53,8 @@ def build(obj: Any, name: str | None = None) -> SchemaNode:
             if value:
                 for i, item in enumerate(value):
                     items.append(build(item, str(i)))
-            else:
-                items.append(build(subtype, "0"))
+
+            prototype = build(subtype, None)
 
             node_children.append(
                 SchemaNode(
@@ -58,6 +63,7 @@ def build(obj: Any, name: str | None = None) -> SchemaNode:
                     children=[],
                     container="list",
                     items=items,
+                    item_schema=prototype,
                 )
             )
             continue
@@ -70,6 +76,8 @@ def build(obj: Any, name: str | None = None) -> SchemaNode:
                 for k, v in value.items():
                     items.append(build(v, k))
 
+            prototype = build(subtype, None)
+
             node_children.append(
                 SchemaNode(
                     name=f.name,
@@ -77,6 +85,7 @@ def build(obj: Any, name: str | None = None) -> SchemaNode:
                     children=[],
                     container="dict",
                     items=items,
+                    item_schema=prototype,
                 )
             )
             continue

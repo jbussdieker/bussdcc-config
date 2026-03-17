@@ -1,6 +1,7 @@
 from dataclasses import dataclass, Field
-from typing import Any, Literal, get_origin, get_args, Type
+from typing import Any, Literal, get_origin, get_args
 from datetime import date, time, datetime
+from enum import Enum
 
 from .field_meta import FieldMeta
 
@@ -8,7 +9,7 @@ from .field_meta import FieldMeta
 @dataclass(slots=True, frozen=True)
 class SchemaField:
     name: str
-    type: Type[object] | str
+    type: object
     meta: FieldMeta
     value: Any | None = None
     input_type: str | None = None
@@ -18,33 +19,40 @@ class SchemaField:
     def from_field(f: Field[object], value: Any | None = None) -> "SchemaField":
         meta = FieldMeta.from_field(f)
 
-        origin = get_origin(f.type)
-        args = get_args(f.type)
+        tp = f.type
+        origin = get_origin(tp)
+        args = get_args(tp)
 
-        input_type = None
-        options = None
+        input_type: str | None = None
+        options: list[str] | None = None
 
         if origin is Literal:
             input_type = "select"
-            options = list(args)
+            options = [str(v) for v in args]
 
-        if input_type is None:
-            if f.type in (int, float):
-                input_type = "number"
-            elif f.type is bool:
-                input_type = "checkbox"
-            elif f.type is date:
-                input_type = "date"
-            elif f.type is time:
-                input_type = "time"
-            elif f.type is datetime:
-                input_type = "datetime-local"
-            else:
-                input_type = "text"
+        elif isinstance(tp, type) and issubclass(tp, Enum):
+            input_type = "select"
+            options = [str(member.value) for member in tp]
+
+            if isinstance(value, Enum):
+                value = value.value
+
+        elif tp in (int, float):
+            input_type = "number"
+        elif tp is bool:
+            input_type = "checkbox"
+        elif tp is date:
+            input_type = "date"
+        elif tp is time:
+            input_type = "time"
+        elif tp is datetime:
+            input_type = "datetime-local"
+        else:
+            input_type = "text"
 
         return SchemaField(
             name=f.name,
-            type=f.type,
+            type=tp,
             meta=meta,
             value=value,
             input_type=input_type,

@@ -11,31 +11,14 @@ class Database:
 
 
 @dataclass(slots=True, frozen=True)
+class Setting:
+    key: str = field(metadata={"label": "Key"})
+    value: int = field(metadata={"label": "Value"})
+
+
+@dataclass(slots=True, frozen=True)
 class Config:
     name: str = field(metadata={"label": "Name", "required": True, "help": "Full name"})
-
-    active: bool = field(
-        metadata={"label": "Active", "help": "User account active status"}
-    )
-
-    birthday: date = field(metadata={"label": "Birthday"})
-    alarm: time = field(metadata={"label": "Alarm"})
-    next_run: datetime = field(metadata={"label": "Next Run"})
-
-    age: int = field(
-        metadata={
-            "label": "Age",
-            "group": "Details",
-            "required": True,
-            "help": "Age on the date filling this out",
-            "min": 0,
-            "max": 120,
-            "step": 1,
-        },
-    )
-
-    sex: Literal["male", "female"] = field(
-        metadata={"label": "Sex", "group": "Details"}
-    )
-
     database: Database
+    settings: list[Setting]
+    params: dict[str, Setting]
