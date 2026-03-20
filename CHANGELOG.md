@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.3.0...v1.4.0) (2026-03-20)
+
+
+### Features
+
+* **config:** enable future annotations in types module ([9c4542e](https://github.com/jbussdieker/bussdcc-config/commit/9c4542ee691ed4666c07cf3e95e07d9003a16a2e))
+
 ## [1.3.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.2.0...v1.3.0) (2026-03-20)
 
 
