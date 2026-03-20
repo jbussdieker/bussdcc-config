@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.2.0...v1.3.0) (2026-03-20)
+
+
+### Features
+
+* **config:** restructure schema handling and update dependencies ([0e9be8d](https://github.com/jbussdieker/bussdcc-config/commit/0e9be8d926709b7a477e8b913df69995979e97a1))
+
 ## [1.2.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.1.0...v1.2.0) (2026-03-17)
 
 
