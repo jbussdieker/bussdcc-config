@@ -48,3 +48,9 @@ context:
 	@echo ""
 	@echo ""
 	@for f in $$(find src -type f -name "*.py"); do echo "# $$f"; cat $$f; echo; echo; done
+	@echo ""
+	@echo ""
+	@for f in $$(find src -type f -name "*.jinja"); do echo "# $$f"; cat $$f; echo; echo; done
+	@echo ""
+	@echo ""
+	@for f in $$(find src -type f -name "*.js"); do echo "# $$f"; cat $$f; echo; echo; done

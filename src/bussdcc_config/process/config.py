@@ -1,5 +1,4 @@
 from bussdcc import Process, ContextProtocol, Event, Message
-from bussdcc_framework.util import build_dataclass
 
 from .. import message, config
 
@@ -9,7 +8,7 @@ class ConfigProcess(Process):
 
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
         if isinstance(evt.payload, message.ConfigInitialized):
-            ctx.state.set("config", build_dataclass(config.Config, evt.payload.data))
+            ctx.state.set("config", evt.payload.config)
         elif isinstance(evt.payload, message.ConfigUpdate):
-            ctx.state.set("config", build_dataclass(config.Config, evt.payload.data))
+            ctx.state.set("config", evt.payload.config)
             ctx.emit(message.ConfigChanged())

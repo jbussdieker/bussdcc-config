@@ -1,5 +1,3 @@
-from dataclasses import asdict
-
 from bussdcc import Service, ContextProtocol, Event, Message
 
 from ..config import ConfigStore
@@ -17,7 +15,7 @@ class ConfigService(Service):
         if cfg is None:
             return
 
-        self.cs.data = asdict(cfg)
+        self.cs.data = cfg
         self.cs.save()
 
         ctx.emit(message.ConfigSaved())

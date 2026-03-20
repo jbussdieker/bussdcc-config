@@ -1,9 +1,10 @@
 import json
-from datetime import date, time, datetime
-from typing import Any, Optional
+from typing import Optional
 from pathlib import Path
 
-from bussdcc_framework import json as framework_json
+from bussdcc_framework.codec import load_value, dump_value
+
+from .config import Config
 
 
 class ConfigStore:
@@ -12,16 +13,14 @@ class ConfigStore:
             path = Path(path)
 
         self.path = path
-        self.data: Optional[dict[str, Any]] = {}
+        self.data: Optional[Config] = None
 
         if path.exists():
-            self.data = framework_json.loads(path.read_text())
-        else:
-            self.data = None
+            self.data = load_value(Config, json.loads(path.read_text()))
 
     def save(self) -> None:
         if self.data is None:
             return
 
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(framework_json.dumps(self.data, indent=2))
+        self.path.write_text(json.dumps(dump_value(self.data), indent=2))

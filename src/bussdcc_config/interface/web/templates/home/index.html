@@ -5,7 +5,7 @@ Welcome <span id="name">{{ config.name }}</span>!
 
 <script>
 socket.on("ui.config.changed", (config) => {
-  document.getElementById("name").innerHTML = config.name;
+  document.getElementById("name").textContent = config.name;
 });
 </script>
 {% endblock %}

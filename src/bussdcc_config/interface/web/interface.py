@@ -1,10 +1,8 @@
 from typing import Any
-from dataclasses import asdict
 
 from flask import redirect, url_for, request
 from flask_socketio import SocketIO
 
-from bussdcc.process import Process
 from bussdcc.context import ContextProtocol
 from bussdcc.event import Event
 from bussdcc.message import Message
@@ -14,16 +12,18 @@ from bussdcc_framework.interface.web.base import FlaskApp
 
 from .blueprints.home import bp as home_bp
 from .blueprints.config import bp as config_bp
-from .blueprints.debug import bp as debug_bp
 
 from ... import message
+
+from ...config.formtree.types import TreeNode
 
 
 class WebInterface(Base):
     def register_routes(self, app: FlaskApp, ctx: ContextProtocol) -> None:
         app.register_blueprint(home_bp)
         app.register_blueprint(config_bp)
-        app.register_blueprint(debug_bp)
+
+        app.jinja_env.tests["tree_node"] = lambda x: isinstance(x, TreeNode)
 
         @app.before_request
         def initial_configuration() -> Any:
@@ -31,7 +31,7 @@ class WebInterface(Base):
             if cfg is not None:
                 return
 
-            allowed_endpoints = {"config.new", "config.update", "debug.index", "static"}
+            allowed_endpoints = {"config.new", "config.update", "static"}
             if request.endpoint not in allowed_endpoints:
                 return redirect(url_for("config.new"))
 

@@ -12,8 +12,7 @@
         {% block scripts %}
             {{ bootstrap.load_js() }}
             <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
-            <script src="//cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
-            <script src="//cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+            <script src="{{ url_for('static', filename='formtree.js') }}"></script>
             <script type="text/javascript" charset="utf-8">
                 // Create a single global socket connection
                 var socket = io({
@@ -62,9 +61,6 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link {{ "active" if request.blueprint == "config" }}" aria-current="page" href="{{ url_for("config.index") }}">Config</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link {{ "active" if request.blueprint == "debug" }}" aria-current="page" href="{{ url_for("debug.index") }}">Debug</a>
                 </li>
               </ul>
             </div>

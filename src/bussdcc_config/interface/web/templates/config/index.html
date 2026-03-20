@@ -1,3 +1,4 @@
+{% import "components/_formtree.jinja" as formtree %}
 {% extends "base.html" %}
 
 {% block content %}
@@ -5,11 +6,14 @@
   <div class="col col-6 offset-md-3">
     <div class="card mb-3">
       <div class="card-body">
-        <h4>Edit Configuration</h4>
+        <form method="post" action="{{ action }}">
+          {{ formtree.render(tree) }}
 
-        {% include "components/_form.html" with context %}
+          <button class="btn btn-primary">Save</button>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}

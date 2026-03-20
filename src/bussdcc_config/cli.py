@@ -61,6 +61,7 @@ def run(
                 host=web_host,
                 port=web_port,
                 template_folder="interface/web/templates",
+                static_folder="interface/web/static",
             )
         )
 
@@ -93,6 +94,7 @@ def replay(
                 host=web_host,
                 port=web_port,
                 template_folder="interface/web/templates",
+                static_folder="interface/web/static",
             )
         )
 
