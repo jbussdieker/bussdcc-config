@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import Field, dataclass
 from datetime import date, datetime, time
 from enum import Enum
