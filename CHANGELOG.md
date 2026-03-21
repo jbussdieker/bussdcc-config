@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.4.0...v1.5.0) (2026-03-21)
+
+
+### Features
+
+* **config:** update bussdcc-framework and refactor formtree handling ([3869bcb](https://github.com/jbussdieker/bussdcc-config/commit/3869bcb59a76f9564e2410615f6db1b91050f2a2))
+
 ## [1.4.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.3.0...v1.4.0) (2026-03-20)
 
 
