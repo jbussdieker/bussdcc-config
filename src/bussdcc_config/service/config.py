@@ -1,7 +1,6 @@
 from bussdcc import Service, ContextProtocol, Event, Message
 
-from ..config import ConfigStore
-from .. import message
+from .. import message, config
 
 
 class ConfigService(Service):
@@ -21,7 +20,7 @@ class ConfigService(Service):
         ctx.emit(message.ConfigSaved())
 
     def start(self, ctx: ContextProtocol) -> None:
-        self.cs = ConfigStore(f"{self._data_dir}/config.json")
+        self.cs = config.ConfigStore(f"{self._data_dir}/config.json")
         if self.cs.data is None:
             return
 

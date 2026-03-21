@@ -3,27 +3,19 @@ from typing import Any
 from flask import redirect, url_for, request
 from flask_socketio import SocketIO
 
-from bussdcc.context import ContextProtocol
-from bussdcc.event import Event
-from bussdcc.message import Message
-
-from bussdcc_framework.interface.web import WebInterface as Base
-from bussdcc_framework.interface.web.base import FlaskApp
+from bussdcc import ContextProtocol, Event, Message
+from bussdcc_framework.web import FlaskApp, WebInterface as Base
 
 from .blueprints.home import bp as home_bp
 from .blueprints.config import bp as config_bp
 
 from ... import message
 
-from ...config.formtree.types import TreeNode
-
 
 class WebInterface(Base):
     def register_routes(self, app: FlaskApp, ctx: ContextProtocol) -> None:
         app.register_blueprint(home_bp)
         app.register_blueprint(config_bp)
-
-        app.jinja_env.tests["tree_node"] = lambda x: isinstance(x, TreeNode)
 
         @app.before_request
         def initial_configuration() -> Any:
@@ -42,12 +34,6 @@ class WebInterface(Base):
             return dict(
                 system_identity=system_identity,
             )
-
-    def register_socketio(self, socketio: SocketIO, ctx: ContextProtocol) -> None:
-        pass
-        # @socketio.on("ui.config.set")
-        # def config_update(data: dict[str, str]) -> None:
-        #    ctx.emit(message.ConfigSet(key=data["key"], value=data["value"]))
 
     def handle_event(self, ctx: ContextProtocol, evt: Event[Message]) -> None:
         if isinstance(evt.payload, message.ConfigChanged):

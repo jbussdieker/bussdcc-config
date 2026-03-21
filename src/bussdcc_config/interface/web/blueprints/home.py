@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 
-from bussdcc_framework.interface.web import current_ctx
+from bussdcc_framework.web import current_ctx
 
 bp = Blueprint("home", __name__)
 

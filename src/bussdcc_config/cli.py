@@ -1,14 +1,18 @@
 import click
 
-from bussdcc_framework.runtime import Runtime, ReplayRuntime
-from bussdcc_framework.io.console import ConsoleSink
-from bussdcc_framework.io.jsonl import JsonlSink, JsonlSource
-from bussdcc_framework import process as framework_process
-from bussdcc_framework import service as framework_service
+from bussdcc_framework.io import ConsoleSink, JsonlSink, JsonlSource
+from bussdcc_framework import (
+    Runtime,
+    ReplayRuntime,
+    process as framework_process,
+    service as framework_service,
+)
 
 from . import process, service, interface
 
 from .version import __version__
+
+PLUGINS = ["bootstrap", "bootstrap-layout", "formtree", "socketio"]
 
 
 def history_path(data_dir: str) -> str:
@@ -62,6 +66,7 @@ def run(
                 port=web_port,
                 template_folder="interface/web/templates",
                 static_folder="interface/web/static",
+                plugins=PLUGINS,
             )
         )
 
@@ -95,6 +100,7 @@ def replay(
                 port=web_port,
                 template_folder="interface/web/templates",
                 static_folder="interface/web/static",
+                plugins=PLUGINS,
             )
         )
 

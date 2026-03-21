@@ -1,12 +1,11 @@
 from typing import Any
 from flask import Blueprint, render_template, redirect, url_for, request
 
-from bussdcc_framework.interface.web import current_ctx
+from bussdcc_framework.web import current_ctx
+from bussdcc_framework.interface.web import formtree
 from bussdcc_framework.codec import load_value
 
 from .... import message, config
-
-from ....config import formtree
 
 bp = Blueprint("config", __name__, url_prefix="/config")
 

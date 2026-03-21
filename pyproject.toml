@@ -4,7 +4,7 @@ dynamic = [
     "version",
 ]
 dependencies = [
-    "bussdcc-framework ~= 0.25.0",
+    "bussdcc-framework ~= 0.30.0",
 ]
 description = "config"
 readme = "README.md"

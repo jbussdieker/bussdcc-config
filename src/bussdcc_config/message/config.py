@@ -2,17 +2,17 @@ from dataclasses import dataclass
 
 from bussdcc import Message
 
-from ..config import Config
+from .. import config
 
 
 @dataclass(slots=True, frozen=True)
 class ConfigInitialized(Message):
-    config: Config
+    config: config.Config
 
 
 @dataclass(slots=True, frozen=True)
 class ConfigUpdate(Message):
-    config: Config
+    config: config.Config
 
 
 @dataclass(slots=True, frozen=True)
