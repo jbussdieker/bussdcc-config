@@ -1,12 +1,8 @@
 import click
 
 from bussdcc_framework.io import ConsoleSink, JsonlSink, JsonlSource
-from bussdcc_framework import (
-    Runtime,
-    ReplayRuntime,
-    process as framework_process,
-    service as framework_service,
-)
+from bussdcc_framework import Runtime, ReplayRuntime
+from bussdcc_system import process as system_process, service as system_service
 
 from . import process, service, interface
 
@@ -52,10 +48,10 @@ def run(
             JsonlSink(root=history_path(data_dir), interval=record_interval)
         )
 
-    runtime.processes.register(framework_process.SystemIdentityProcess())
+    runtime.processes.register(system_process.SystemIdentityProcess())
     runtime.processes.register(process.ConfigProcess())
 
-    runtime.services.register(framework_service.SystemIdentityService())
+    runtime.services.register(system_service.SystemIdentityService())
     runtime.services.register(service.ConfigService(data_dir))
 
     if web:
@@ -89,7 +85,7 @@ def replay(
 
     runtime.add_sink(ConsoleSink())
 
-    runtime.processes.register(framework_process.SystemIdentityProcess())
+    runtime.processes.register(system_process.SystemIdentityProcess())
     runtime.processes.register(process.ConfigProcess())
 
     if web:
