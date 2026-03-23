@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/jbussdieker/bussdcc-config/compare/v0.5.0...v0.6.0) (2026-03-23)
+
+
+### Features
+
+* **config:** update dependencies and refactor CLI imports ([0dc7e01](https://github.com/jbussdieker/bussdcc-config/commit/0dc7e01e5d3d854f43e566975f1156fb1d91cf4f))
+
 ## [0.5.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.5.0...v0.5.0) (2026-03-23)
 
 
