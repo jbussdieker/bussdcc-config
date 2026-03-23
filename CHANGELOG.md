@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.5.0...v0.5.0) (2026-03-23)
+
+
+### Miscellaneous Chores
+
+* **release:** bumping version number ([ce626f9](https://github.com/jbussdieker/bussdcc-config/commit/ce626f9e511a09b190a2fd06d3c302fe6a90d205))
+
 ## [1.5.0](https://github.com/jbussdieker/bussdcc-config/compare/v1.4.0...v1.5.0) (2026-03-21)
 
 
